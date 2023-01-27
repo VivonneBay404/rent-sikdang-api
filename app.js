@@ -1,22 +1,14 @@
-const express = require('express')
-const morgan = require('morgan')
- 
+const express = require('express');
+const morgan = require('morgan');
 
-const sikdangData = require('./asset/dummyData')
+const sikdangRouter = require('./routes/sikdangRouter');
 
-const app = express()
+const app = express();
+
+app.use(morgan('dev'));
 //req 접근
 app.use(express.json());
 
-app.get('/sikdang',(req,res )=> {
-    res.send(sikdangData)
-})
-app.get('/sikdang/:id',(req,res)=> {
-    res.send(sikdangData[req.params.id])
-    console.log()
-})
+app.use('/api/v1/sikdang', sikdangRouter);
 
-app.listen(3000, () => {
-    console.log(`App running on port 3000...`);
-  });
-
+module.exports = app;
