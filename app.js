@@ -5,7 +5,10 @@ const sikdangRouter = require('./routes/sikdangRouter');
 
 const app = express();
 
-app.use(morgan('dev'));
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+}
+
 //req 접근
 app.use(express.json());
 
