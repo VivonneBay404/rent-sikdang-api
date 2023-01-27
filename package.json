@@ -1,0 +1,23 @@
+{
+  "name": "rent-sikdang-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VivonneBay404/rent-sikdang-api.git"
+  },
+  "author": "Jihong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VivonneBay404/rent-sikdang-api/issues"
+  },
+  "homepage": "https://github.com/VivonneBay404/rent-sikdang-api#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  }
+}
