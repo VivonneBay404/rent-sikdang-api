@@ -1,13 +1,9 @@
-const express = require('express')
-const router = express.Router()
-const dummyData = require('../asset/dummyData')
+const express = require('express');
+const router = express.Router();
 
-router.route('/').get((req, res) => {
-    res.status(200).json(dummyData)
-})
-router.route('/:id').get((req, res) => {
-    res.status(200).json(dummyData[req.params.id]
-    )
-})
+const sikdangController = require('../controllers/sikdangController');
 
-module.exports = router
+router.route('/').get(sikdangController.getAllSikdangs);
+router.route('/:id').get(sikdangController.getSikdang);
+
+module.exports = router;
