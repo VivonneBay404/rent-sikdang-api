@@ -2,9 +2,27 @@ const Sikdang = require('../models/sikdangModel');
 
 exports.getAllSikdangs = async (req, res) => {
   console.log('req.query', req.query);
-  const sikdangs = await Sikdang.find(req.query);
 
-  res.status(200).json(sikdangs);
+  const queryStr = req.query;
+
+  //특정 필드 쿼리에서 삭제
+  const queryObj = { ...req.query };
+  const excludedFields = ['page', 'sort', 'limit', 'fields'];
+  excludedFields.forEach((el) => delete queryObj[el]);
+
+  //pagination
+  const page = queryStr.page * 1 || 1;
+  const limit = queryStr.limit * 1 || 5;
+  const skip = (page - 1) * limit;
+
+  console.log('queryObj', queryObj);
+
+  const query = Sikdang.find(queryObj);
+  const count = (await Sikdang.find(queryObj)).length;
+  console.log('count', count);
+
+  const sikdang = await query.skip(skip).limit(limit);
+  res.status(200).json({ sikdang, count: count });
 };
 
 exports.getSikdang = async (req, res) => {
