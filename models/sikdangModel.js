@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const sikdangSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, '식당은 이름이 필요합니다.'],
+    required: true,
   },
   maxPeople: {
     type: String,
