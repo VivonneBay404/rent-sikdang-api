@@ -13,6 +13,7 @@ const sikdangSchema = new mongoose.Schema({
   },
   category: String,
   photos: [String],
+  description: String,
 });
 
 const Sikdang = mongoose.model('Sikdang', sikdangSchema);

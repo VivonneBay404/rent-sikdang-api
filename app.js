@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const sikdangRouter = require('./routes/sikdangRouter');
-
+const userRouter = require('./routes/userRouter');
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
@@ -23,5 +23,5 @@ app.use(
 app.use(bodyParser.json());
 
 app.use('/api/v1/sikdang', sikdangRouter);
-
+app.use('/api/v1/user', userRouter);
 module.exports = app;
