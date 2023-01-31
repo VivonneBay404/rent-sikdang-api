@@ -3,21 +3,30 @@ const Sikdang = require('../models/sikdangModel');
 exports.getAllSikdangs = async (req, res) => {
   console.log('req.query', req.query);
 
-  const queryStr = req.query;
-
   //특정 필드 쿼리에서 삭제
-  const queryObj = { ...req.query };
+  let queryObj = { ...req.query };
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
   excludedFields.forEach((el) => delete queryObj[el]);
 
+  //크거나 작은 필드 몽구스에 맞게 변형
+  let queryStr = JSON.stringify(queryObj);
+  queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+  console.log('queryStr', queryStr);
+
+  queryObj = JSON.parse(queryStr);
+
+  console.log('queryObj', queryObj);
+
   //pagination
-  const page = queryStr.page * 1 || 1;
-  const limit = queryStr.limit * 1 || 5;
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 5;
   const skip = (page - 1) * limit;
 
   console.log('queryObj', queryObj);
 
   const query = Sikdang.find(queryObj);
+
+  //필터링된 식당의 갯수
   const count = (await Sikdang.find(queryObj)).length;
   console.log('count', count);
 

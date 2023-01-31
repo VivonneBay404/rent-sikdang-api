@@ -6,12 +6,13 @@ const sikdangSchema = new mongoose.Schema({
     required: true,
   },
   maxPeople: {
-    type: String,
+    type: Number,
   },
   minSpend: {
-    type: String,
+    type: Number,
   },
   category: String,
+  photos: [String],
 });
 
 const Sikdang = mongoose.model('Sikdang', sikdangSchema);
