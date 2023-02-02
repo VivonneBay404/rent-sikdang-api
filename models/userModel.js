@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, '비밀번호를 입력해주세요'],
     minLength: 8,
+    //res에서 삭제
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -30,8 +32,10 @@ const userSchema = new mongoose.Schema({
       message: '비밀번호가 다릅니다',
     },
   },
+  sikdangs: [{ type: mongoose.Schema.ObjectId, ref: 'Sikdang' }],
 });
 
+//비밀번호 hash
 userSchema.pre('save', async function (next) {
   //비밀번호가 생기거나 변할때만 작동
   if (!this.isModified('password')) return next();
@@ -40,6 +44,14 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = undefined;
   next();
 });
+
+//비밀번호 비교후 boolean return
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
