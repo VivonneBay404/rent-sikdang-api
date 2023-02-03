@@ -12,7 +12,7 @@ router.post('/login', authController.login);
 //   .get(userController.getAllUsers)
 //   .post(userController.createUser);
 
-router.route('/:id').get(userController.getUser);
+router.route('/:id').get(authController.protect, userController.getUser);
 //   .patch(userController.updateUser)
 //   .delete(userController.deleteUser);
 

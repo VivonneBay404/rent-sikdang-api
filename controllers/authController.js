@@ -1,3 +1,4 @@
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
@@ -46,6 +47,27 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.protect = catchAsync((req, res, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
+  console.log('req', req.headers);
+  //토큰이 있는지 확인
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+    console.log('token', token);
+  }
+  if (!token) {
+    return next(new AppError('로그인이 안되있습니다', 401));
+  }
+  //토큰 validation
+
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  console.log('decoded', decoded);
+
+  //user check
+
+  //토큰이 발행된후 비밀번호를 바꿧는지 확인인
   next();
 });

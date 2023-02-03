@@ -1,6 +1,8 @@
 const Sikdang = require('../models/sikdangModel');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 
-exports.getAllSikdangs = async (req, res) => {
+exports.getAllSikdangs = catchAsync(async (req, res) => {
   console.log('req.query', req.query);
 
   //특정 필드 쿼리에서 삭제
@@ -32,21 +34,21 @@ exports.getAllSikdangs = async (req, res) => {
 
   const sikdang = await query.skip(skip).limit(limit);
   res.status(200).json({ sikdang, count: count });
-};
+});
 
-exports.getSikdang = async (req, res) => {
-  try {
-    const sikdang = await Sikdang.findById(req.params.id);
+exports.getSikdang = catchAsync(async (req, res, next) => {
+  const sikdang = await Sikdang.findById(req.params.id);
 
-    res.status(200).json(sikdang);
-  } catch (err) {
-    res.status(404).json(err);
+  if (!sikdang) {
+    return next(new AppError('ID에 맞는 식당이없습니다', 404));
   }
-};
 
-exports.createSikdang = async (req, res) => {
+  res.status(200).json(sikdang);
+});
+
+exports.createSikdang = catchAsync(async (req, res) => {
   console.log('req', req);
   console.log('req.body', req.body);
   const newSikdang = await Sikdang.create(req.body);
   res.status(201).json(newSikdang);
-};
+});
