@@ -11,9 +11,12 @@ router.post('/login', authController.login);
 //   .route('/')
 //   .get(userController.getAllUsers)
 //   .post(userController.createUser);
+router.patch('/:id/addSikdangToUser', userController.addSikdangToUser);
 
-router.route('/:id').get(authController.protect, userController.getUser);
-//   .patch(userController.updateUser)
+router
+  .route('/:id')
+  .get(authController.protect, userController.getUser)
+  .patch(authController.protect, userController.updateUser);
 //   .delete(userController.deleteUser);
 
 module.exports = router;

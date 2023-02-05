@@ -10,7 +10,7 @@ const signToken = (id) => {
   });
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
+exports.signup = catchAsync(async (req, res) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -47,8 +47,9 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
+//로그인이 안되있으면 특정라우트를 막는 미들웨어
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log('req', req.headers);
+  console.log('protect req', req.headers);
   //토큰이 있는지 확인
   let token;
   if (
@@ -67,7 +68,10 @@ exports.protect = catchAsync(async (req, res, next) => {
   console.log('decoded', decoded);
 
   //user check
+  const freshUser = await User.findById(decoded.id);
+  if (!freshUser) {
+    return next(new AppError('유저가 더이상 존재하지않습니다.', 401));
+  }
 
-  //토큰이 발행된후 비밀번호를 바꿧는지 확인인
   next();
 });
