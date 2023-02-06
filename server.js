@@ -10,7 +10,7 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
   })
-  .then((con) => {
+  .then(() => {
     console.log('DB connection sucessful');
   });
 
