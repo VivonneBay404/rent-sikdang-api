@@ -19,6 +19,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     user,
+    status: 'success',
   });
   // res.status(500).json({
   //   status: 'error',
@@ -32,18 +33,15 @@ exports.updateUser = catchAsync(async (req, res) => {
   });
   res.status(201).json({
     user,
+    status: 'success',
+    message: '유저정보를 업데이트했습니다.',
   });
 });
 exports.addSikdangToUser = catchAsync(async (req, res, next) => {
-  console.log('req addSikdangToUser params', req.params);
-
   const userId = req.body.userId;
   const sikdangId = req.params.id;
   let user = await User.findById(userId);
   let sikdang = await Sikdang.findById(sikdangId);
-  console.log('req.body.', req.body);
-  console.log('user', user);
-  console.log('sikdang', sikdang);
   if (!sikdang) {
     return next(new AppError('존재하지않는 식당입니다.', 404));
   }
@@ -52,14 +50,16 @@ exports.addSikdangToUser = catchAsync(async (req, res, next) => {
   } else {
     return next(new AppError('이미 상담신청한 식당입니다', 406));
   }
-  console.log('식당 추가 user', user);
+
   user = await User.findByIdAndUpdate(userId, user, {
     new: true,
     runValidators: true,
   });
-  console.log('user', user);
+
   res.status(201).json({
     user,
+    status: 'success',
+    message: '"상담신청 성공☺️. 프로필에서 확인할 수 있습니다."',
   });
 });
 // exports.createUser = (req, res) => {

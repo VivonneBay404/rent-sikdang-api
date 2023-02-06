@@ -33,7 +33,7 @@ exports.getAllSikdangs = catchAsync(async (req, res) => {
   console.log('count', count);
 
   const sikdang = await query.skip(skip).limit(limit);
-  res.status(200).json({ sikdang, count: count });
+  res.status(200).json({ sikdang, count: count, status: 'success' });
 });
 
 exports.getSikdang = catchAsync(async (req, res, next) => {
@@ -43,12 +43,12 @@ exports.getSikdang = catchAsync(async (req, res, next) => {
     return next(new AppError('ID에 맞는 식당이없습니다', 404));
   }
 
-  res.status(200).json(sikdang);
+  res.status(200).json({ sikdang, status: 'success' });
 });
 
 exports.createSikdang = catchAsync(async (req, res) => {
   console.log('req', req);
   console.log('req.body', req.body);
   const newSikdang = await Sikdang.create(req.body);
-  res.status(201).json(newSikdang);
+  res.status(201).json({ newSikdang, status: 'success' });
 });

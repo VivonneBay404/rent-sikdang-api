@@ -24,6 +24,8 @@ exports.signup = catchAsync(async (req, res) => {
   res.status(201).json({
     user: newUser,
     token,
+    status: 'success',
+    message: '회원가입 성공',
   });
 });
 
@@ -44,12 +46,13 @@ exports.login = catchAsync(async (req, res, next) => {
   res.status(200).json({
     user,
     token,
+    status: 'success',
+    message: '로그인 성공',
   });
 });
 
 //로그인이 안되있으면 특정라우트를 막는 미들웨어
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log('protect req', req.headers);
   //토큰이 있는지 확인
   let token;
   if (
@@ -57,7 +60,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-    console.log('token', token);
   }
   if (!token) {
     return next(new AppError('로그인이 안되있습니다', 401));
@@ -65,7 +67,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   //토큰 validation
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log('decoded', decoded);
 
   //user check
   const freshUser = await User.findById(decoded.id);
